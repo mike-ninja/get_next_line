@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mid.c                                              :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mbarutel <mbarutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/15 15:33:41 by bkandemi          #+#    #+#             */
-/*   Updated: 2021/12/15 22:58:37 by bkandemi         ###   ########.fr       */
+/*   Created: 2022/01/05 14:23:34 by mbarutel          #+#    #+#             */
+/*   Updated: 2022/01/05 14:25:47 by mbarutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../get_next_line.h"
 #include <stdio.h>
 #include <fcntl.h>
+#include <string.h>
 
 int main(int argc, char **argv)
 {
@@ -26,15 +27,9 @@ int main(int argc, char **argv)
 		fd = 0;
 	while ((gnl = get_next_line(fd, &line)) > 0)
 	{
-		if (ft_strequ(line, "1234567 1234567") != 1)
-		{
-			printf("mid: [ko]\n");
-			return (1);
-		}
-		printf("line: %s\n", line);
-		if (line != NULL)
+		printf("%s\n", line);
+		if (line != NULL) 
 			free(line);
 	}
-	printf("mid: [ok]\n");
 	return (0);
 }
