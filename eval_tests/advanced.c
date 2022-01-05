@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   advanced.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbarutel <mbarutel@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/05 14:23:34 by mbarutel          #+#    #+#             */
-/*   Updated: 2022/01/05 15:01:48 by mbarutel         ###   ########.fr       */
+/*   Created: 2021/12/14 17:57:11 by bkandemi          #+#    #+#             */
+/*   Updated: 2022/01/05 15:23:09 by mbarutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../get_next_line.h"
+#include "get_next_line.h"
 #include <stdio.h>
 #include <fcntl.h>
-#include <string.h>
 
 int main(int argc, char **argv)
 {
@@ -27,10 +26,14 @@ int main(int argc, char **argv)
 		fd = 0;
 	while ((gnl = get_next_line(fd, &line)) > 0)
 	{
-		printf("%s\n", line);
-		if (line != NULL) 
+		if (ft_strequ(line, "123") != 1)
+		{
+			printf("adv [ko]\n");
+			printf("line: %s\n", line);
+		}
+		if (line != NULL)
 			free(line);
-	}
-	system("leaks test_gnl");
+	}	
+	printf("adv [ok]\n");
 	return (0);
 }

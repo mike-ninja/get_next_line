@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   basic.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbarutel <mbarutel@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/05 14:23:34 by mbarutel          #+#    #+#             */
-/*   Updated: 2022/01/05 15:01:48 by mbarutel         ###   ########.fr       */
+/*   Created: 2021/12/14 17:35:37 by bkandemi          #+#    #+#             */
+/*   Updated: 2022/01/05 15:14:25 by mbarutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,13 @@ int main(int argc, char **argv)
 		fd = 0;
 	while ((gnl = get_next_line(fd, &line)) > 0)
 	{
-		printf("%s\n", line);
-		if (line != NULL) 
+		if (ft_strequ(line, "1234567") == 1)
+		{
+			printf("basic: [ok]\n");
+			return (1);
+		}
+		printf("line: %s\n", line);
+		if (line != NULL)
 			free(line);
 	}
 	system("leaks test_gnl");
