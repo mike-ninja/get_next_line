@@ -6,138 +6,84 @@
 /*   By: mbarutel <mbarutel@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 12:27:25 by mbarutel          #+#    #+#             */
-/*   Updated: 2021/12/21 13:53:38 by mbarutel         ###   ########.fr       */
+/*   Updated: 2022/01/04 18:46:07 by mbarutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "libft/libft.h"
-#include <fcntl.h> // open()
-#include <stdio.h> // printf()
 
-static int  read_fd(const int fd, char **line, char *arr[FD_SIZE]);
-static int  take_line(const int fd, char **line, char *ar[FD_SIZE], int end);
-static int  take_last(const int fd, char **line, char *arr[FD_SIZE], int end);
+static int	line_copy(char **str, char **line);
+static int	read_ret(int fd, char *buff, char **str);
+static int	ret_val(int fd, int ret, char **str, char **line);
 
-int main(void)
+int	get_next_line(const int fd, char **line)
 {
-    char    **line;
-    int     fd;
-    int     ret;
-    char    *arr[FD_SIZE];
-    
-    ft_putendl("fd open succesful");
-    fd = open("text.txt", O_RDONLY);
-    ft_putstr("fd : ");
-    ft_putnbr(fd);
-    ft_putchar('\n');
-    if (fd < 0)
-        return (0);
-    ret = get_next_line(fd, line);
-    ft_putendl("get_next_line succesful");
-    while (ret)
-    {
-        printf("%s\n", *line);
-        line++;
-        ret = get_next_line(fd, line);
-    }
-    return (ret);
+	int			ret;
+	static char	*str[FD_SIZE];
+	char		buff[BUFF_SIZE + 1];
+
+	if (fd >= 0 && line)
+	{
+		ret = read_ret(fd, buff, str);
+		return (ret_val(fd, ret, str, line));
+	}
+	return (-1);
 }
 
-int get_next_line(const int fd, char **line)
+static int	read_ret(int fd, char *buff, char **str)
 {
-    static char *arr[FD_SIZE];
-    
-    
-    if (read(fd, arr[0], 0) < 0 || !line || fd >= FD_SIZE - 1 || fd < 0 || BUFF_SIZE < 1)
-        return (-1);
-    printf("This happens\n");
-    arr[FD_SIZE - 1] = "1";
-    
-    if (take_line(fd, line, arr, 1) == -1)
-    {
-        ft_strdel(&(arr)[fd]);
-        return (-1);
-    }
-    if (ft_strcmp(arr[FD_SIZE - 1], "0") == 0)
-    {
-        *line = NULL;
-        return (0);
-    }
-    return (1);
+	int			ret;
+	char		*tmp;
+
+	ret = read(fd, buff, BUFF_SIZE);
+	while (ret > 0)
+	{
+		buff[ret] = '\0';
+		if (!str[fd])
+			str[fd] = ft_strdup(buff);
+		else
+		{
+			tmp = ft_strjoin(str[fd], buff);
+			ft_strdel(&str[fd]);
+			str[fd] = tmp;
+		}
+		if (strchr(str[fd], '\n'))
+			break ;
+		ret = read(fd, buff, BUFF_SIZE);
+	}
+	return (ret);
 }
 
-static int  read_fd(const int fd, char **line, char *arr[FD_SIZE])
+static int	ret_val(int fd, int ret, char **str, char **line)
 {
-    char    buf[BUFF_SIZE + 1];
-    int     bytes_read;
-    char    *tmp;
-
-    ft_bzero(buf, BUFF_SIZE + 1);
-    bytes_read = read(fd, buf, BUFF_SIZE);
-    if (bytes_read > 0)
-    {
-        tmp = ft_strjoin(arr[fd], buf);
-        if (!tmp)
-            return(-1);
-        ft_bzero(buf, BUFF_SIZE);
-        free(arr[fd]);
-        arr[fd] = tmp;
-        return (take_line(fd, line, arr, 1));
-    }
-    else if (bytes_read < 0)
-        return (0);
-    return (take_line(fd, line, arr, 0));
+	if (ret < 0)
+		return (-1);
+	if (ret == 0 && !str[fd])
+		return (0);
+	return (line_copy(&str[fd], line));
 }
 
-static int  take_line(const int fd, char **line, char *arr[FD_SIZE], int end)
+static int	line_copy(char **str, char **line)
 {
-    int     i;
-    char    *tmp;
+	int		i;
+	char	*tmp;
 
-    i = 0;
-    while ((arr[fd]) && arr[fd][i])
-    {
-        if (arr[fd][i] == '\n')
-        {
-            arr[fd][i] = '\0';
-            *line = ft_strdup(arr[fd]);
-            if (*line)
-            {
-                tmp = ft_strdup(&(arr)[fd][i + 1]);
-                if (tmp)
-                {
-                    free(arr[fd]);
-                    arr[fd] = tmp;
-                    return (1);
-                }
-                free(*line);
-                return (-1);
-            }
-            return (-1);
-        }
-        i++;
-    }
-    return (take_last(fd, line, arr, end));
-}
-
-static int  take_last(const int fd, char **line, char *arr[FD_SIZE], int end)
-{
-    if (end == 0)
-    {
-        if (!arr[fd])
-        {
-            arr[FD_SIZE - 1] = "0";
-            return (0);
-        }
-        *line = ft_strdup(arr[fd]);
-        if (!*line)
-            return (-1);
-        if (arr[fd][0] == '\0')
-            arr[FD_SIZE - 1] = "0";
-        ft_bzero(arr[fd], ft_strlen(arr[fd]));
-        return (0);
-    }
-    else
-        return (read_fd(fd, line, arr));
+	i = 0;
+	while ((*str)[i] != '\n' && (*str)[i] != '\0')
+		i++;
+	if ((*str)[i] == '\n')
+	{
+		*line = ft_strsub((*str), 0, i);
+		tmp = ft_strdup(&(*str)[i + 1]);
+		ft_strdel(str);
+		*str = tmp;
+		if ((*str)[0] == '\0')
+			ft_strdel(str);
+	}
+	else
+	{
+		*line = ft_strdup(*str);
+		ft_strdel(str);
+	}
+	return (1);
 }
