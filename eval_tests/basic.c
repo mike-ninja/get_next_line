@@ -6,7 +6,7 @@
 /*   By: mbarutel <mbarutel@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:35:37 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/01/05 15:14:25 by mbarutel         ###   ########.fr       */
+/*   Updated: 2022/01/13 13:36:31 by mbarutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ int main(int argc, char **argv)
 		if (line != NULL)
 			free(line);
 	}
-	system("leaks test_gnl");
+	//system("leaks test_gnl");
 	return (0);
 }

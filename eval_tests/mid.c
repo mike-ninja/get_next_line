@@ -6,7 +6,7 @@
 /*   By: mbarutel <mbarutel@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 15:33:41 by bkandemi          #+#    #+#             */
-/*   Updated: 2022/01/05 15:21:54 by mbarutel         ###   ########.fr       */
+/*   Updated: 2022/01/05 15:51:06 by mbarutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ int main(int argc, char **argv)
 			free(line);
 	}
 	printf("mid: [ok]\n");
+	//system("leaks test_gnl");
 	return (0);
 }

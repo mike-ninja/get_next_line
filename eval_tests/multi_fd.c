@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_fd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bkandemi <bkandemi@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mbarutel <mbarutel@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 10:15:22 by bkandemi          #+#    #+#             */
-/*   Updated: 2021/12/15 22:44:16 by bkandemi         ###   ########.fr       */
+/*   Updated: 2022/01/05 15:51:11 by mbarutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ int	main(void)
 	close(fd1);
 	close(fd2);
 	close(fd3);
+	//system("leaks test_gnl");
 	return (0);
 }
